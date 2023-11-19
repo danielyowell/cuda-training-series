@@ -1,6 +1,12 @@
 ## **1. Vector Add**
 
-We'll use a slight variation on the vector add code presented in a previous homework (*vector_add.cu*).  Edit the code to build a complete vector_add program. You can refer to *vector_add_solution.cu* for a complete example.  For this example, we have made a change to the kernel to use something called a grid-stride loop.  This topic will be dealt with in more detail in a later training session, but for now we can describe it as a flexible kernel design method that allows a simple kernel to handle an arbitrary size data set with an arbitrary size "grid", i.e. the configuration of blocks and threads associated with the kernel launch.  If you'd like to read more about grid-stride loops right now, you can visit https://devblogs.nvidia.com/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/
+We'll use a slight variation on the vector add code presented in a previous homework (*vector_add.cu*).  
+
+Edit the code to build a complete vector_add program. You can refer to *vector_add_solution.cu* for a complete example.  
+
+For this example, we have made a change to the kernel to use something called a grid-stride loop.  This topic will be dealt with in more detail in a later training session, but for now we can describe it as a flexible kernel design method that allows a simple kernel to handle an arbitrary size data set with an arbitrary size "grid", i.e. the configuration of blocks and threads associated with the kernel launch.  
+
+If you'd like to read more about grid-stride loops right now, you can visit https://devblogs.nvidia.com/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/
 
 As we will see, this flexibility is important for our investigations in section 2 of this homework session.  However, as before, all you need to focus on are the FIXME items, and these sections will be identical to the work you did in a previous homework assignment.  If you get stuck, you can refer to the solution *vector_add_solution.cu*.
 

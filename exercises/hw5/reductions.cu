@@ -17,7 +17,10 @@
 const size_t N = 8ULL*1024ULL*1024ULL;  // data size
 //const size_t N = 256*640; // data size
 const int BLOCK_SIZE = 256;  // CUDA maximum is 1024
+
 // naive atomic reduction kernel
+// iterates from initial idx value to N
+// calls atomicAdd whenever idx < N (magic function)
 __global__ void atomic_red(const float *gdata, float *out){
   size_t idx = threadIdx.x+blockDim.x*blockIdx.x;
   if (idx < N) atomicAdd(out, gdata[idx]);
@@ -102,16 +105,20 @@ int main(){
   float *h_A, *h_sum, *d_A, *d_sum;
   h_A = new float[N];  // allocate space for data in host memory
   h_sum = new float;
+
   for (int i = 0; i < N; i++)  // initialize matrix in host memory
     h_A[i] = 1.0f;
+  
   cudaMalloc(&d_A, N*sizeof(float));  // allocate device space for A
   cudaMalloc(&d_sum, sizeof(float));  // allocate device space for sum
   cudaCheckErrors("cudaMalloc failure"); // error checking
+  
   // copy matrix A to device:
   cudaMemcpy(d_A, h_A, N*sizeof(float), cudaMemcpyHostToDevice);
   cudaCheckErrors("cudaMemcpy H2D failure");
   cudaMemset(d_sum, 0, sizeof(float));
   cudaCheckErrors("cudaMemset failure");
+  
   //cuda processing sequence step 1 is complete
   atomic_red<<<(N+BLOCK_SIZE-1)/BLOCK_SIZE, BLOCK_SIZE>>>(d_A, d_sum);
   cudaCheckErrors("atomic reduction kernel launch failure");
